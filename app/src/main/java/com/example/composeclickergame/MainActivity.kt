@@ -44,10 +44,15 @@ fun MainScreen() {
                     Column(
                         modifier = Modifier.weight(1f),
                         verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Text(
                             text = "12345",
                             style = MaterialTheme.typography.displayMedium,
+                        )
+                        Text(
+                            text = "123/s",
+                            style = MaterialTheme.typography.headlineSmall,
                         )
                     }
                     Column(
