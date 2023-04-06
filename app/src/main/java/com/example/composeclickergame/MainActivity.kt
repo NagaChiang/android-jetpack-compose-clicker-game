@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -52,16 +53,33 @@ fun MainScreen() {
                     Column(
                         modifier = Modifier.weight(1f),
                         verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
-                        FilledIconButton(
-                            modifier = Modifier.size(80.dp),
+                        Column(
+                            modifier = Modifier.weight(1f),
+                            verticalArrangement = Arrangement.Center,
+                        ) {
+                            FilledIconButton(
+                                modifier = Modifier.size(80.dp),
+                                onClick = {}
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Add,
+                                    contentDescription = "Add",
+                                    modifier = Modifier.size(56.dp),
+                                )
+                            }
+                        }
+                        FilledTonalButton(
+                            modifier = Modifier.padding(16.dp),
                             onClick = {}
                         ) {
                             Icon(
-                                imageVector = Icons.Default.Add,
-                                contentDescription = "Add",
-                                modifier = Modifier.size(64.dp),
+                                imageVector = Icons.Default.ShoppingCart,
+                                contentDescription = "Store",
                             )
+                            Box(modifier = Modifier.size(8.dp))
+                            Text(text = "Store")
                         }
                     }
                 }
