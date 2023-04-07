@@ -1,12 +1,13 @@
 package com.example.composeclickergame.view
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.composeclickergame.model.ItemData
 import com.example.composeclickergame.model.ItemDataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,12 +28,17 @@ class GameViewModel @Inject constructor(
         }
     }
 
-    fun addScore(amount: Int) {
-        _score.value += amount
+    init {
+        viewModelScope.launch {
+            while (true) {
+                delay(1000L)
+                _score.value += rate.first()
+            }
+        }
     }
 
     fun onIncrementButtonClicked() {
-        addScore(1)
+        _score.value += 1
     }
 
     fun onStoreItemPurchased(itemData: ItemData) {
