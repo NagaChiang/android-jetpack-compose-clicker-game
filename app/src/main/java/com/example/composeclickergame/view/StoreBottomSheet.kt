@@ -11,6 +11,8 @@ import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,7 +20,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.composeclickergame.model.ItemData
-import com.example.composeclickergame.ui.theme.ComposeClickerGameTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -34,6 +35,7 @@ fun StoreBottomSheet(
 ) {
     val bottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val itemDatas = gameViewModel.itemDatas
+    val itemCountMap by gameViewModel.itemCountMap.collectAsState()
 
     ModalBottomSheetLayout(
         sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
@@ -47,7 +49,11 @@ fun StoreBottomSheet(
                         items = itemDatas,
                         key = { it.name },
                         itemContent = { itemData ->
-                            StoreItem(itemData)
+                            StoreItem(
+                                itemData,
+                                itemCountMap[itemData.name] ?: 0,
+                                gameViewModel::onStoreItemPurchased,
+                            )
                         }
                     )
                 },
@@ -60,9 +66,13 @@ fun StoreBottomSheet(
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun StoreItem(itemData: ItemData) {
+private fun StoreItem(
+    itemData: ItemData,
+    itemCount: Int,
+    onItemPurchased: (ItemData) -> Unit,
+) {
     ListItem(
-        text = { Text(text = itemData.name) },
+        text = { Text(text = "${itemData.name} ($itemCount)") },
         secondaryText = { Text(text = "${itemData.rate}/s") },
         trailing = {
             Column(
@@ -71,7 +81,7 @@ private fun StoreItem(itemData: ItemData) {
             ) {
                 ElevatedButton(
                     modifier = Modifier.width(100.dp),
-                    onClick = {},
+                    onClick = { onItemPurchased(itemData) },
                 ) {
                     Text(text = "$${itemData.price}")
                 }

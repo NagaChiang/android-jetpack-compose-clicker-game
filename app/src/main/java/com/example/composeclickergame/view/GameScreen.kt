@@ -9,16 +9,15 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
@@ -30,6 +29,14 @@ fun GameScreen(
     gameViewModel: GameViewModel = hiltViewModel(),
 ) {
     val score by gameViewModel.score.collectAsState()
+    val rate by gameViewModel.rate.collectAsState(0)
+
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(1000)
+            gameViewModel.addScore(gameViewModel.rate.first())
+        }
+    }
 
     Scaffold { contentPadding ->
         Box(modifier = Modifier.padding(contentPadding)) {
@@ -44,7 +51,7 @@ fun GameScreen(
                 ) {
                     ScoreText(score)
                     Text(
-                        text = "123/s",
+                        text = "$rate/s",
                         style = MaterialTheme.typography.headlineSmall,
                     )
                 }
