@@ -1,24 +1,32 @@
 package com.example.composeclickergame.view
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetState
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.composeclickergame.ui.theme.ComposeClickerGameTheme
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.CoroutineScope
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 fun GameScreen(
+    parentScope: CoroutineScope = rememberCoroutineScope(),
+    storeBottomSheetState: ModalBottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden),
     gameViewModel: GameViewModel = viewModel(),
 ) {
     val count by gameViewModel.count.collectAsState()
@@ -82,7 +90,7 @@ fun GameScreen(
 }
 
 @Composable
-fun CountText(count: Int) {
+private fun CountText(count: Int) {
     Text(
         text = count.toString(),
         style = MaterialTheme.typography.displayMedium,
